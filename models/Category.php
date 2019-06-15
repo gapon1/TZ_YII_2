@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "category".
@@ -29,6 +30,7 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name', 'description'], 'required'],
             [['name', 'description'], 'string', 'max' => 255],
         ];
     }
@@ -52,4 +54,5 @@ class Category extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Product::className(), ['cat_id' => 'id']);
     }
+
 }

@@ -15,6 +15,7 @@ class m190520_162356_create_product_table extends Migration
         $this->createTable('{{%product}}', [
             'id' => $this->primaryKey(),
             'cat_id' => $this->integer(),
+            'review_id' => $this->integer(),
             'title' => $this->string(),
             'description' => $this->string(),
             'image' => $this->string(),
@@ -38,6 +39,20 @@ class m190520_162356_create_product_table extends Migration
         );
 
 
+        $this->createIndex(
+            'inx-review_id',
+            'product',
+            'review_id'
+        );
+
+        $this->addForeignKey(
+            'fk-review_id',
+            'product',
+            'review_id',
+            'review',
+            'id',
+            'CASCADE'
+        );
 
 
 

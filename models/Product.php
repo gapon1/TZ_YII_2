@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "product".
@@ -34,10 +35,11 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cat_id', 'review_id', 'price'], 'integer'],
+            [['price'], 'integer'],
+            [['cat_id', 'price', 'title'], 'required'],
             [['title', 'description', 'image'], 'string', 'max' => 255],
             [['cat_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['cat_id' => 'id']],
-            [['review_id'], 'exist', 'skipOnError' => true, 'targetClass' => Review::className(), 'targetAttribute' => ['review_id' => 'id']],
+
         ];
     }
 
@@ -48,13 +50,13 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'cat_id' => 'Cat ID',
-            'review_id' => 'Review ID',
+            'cat_id' => 'Category',
             'title' => 'Title',
             'description' => 'Description',
             'image' => 'Image',
             'price' => 'Price',
         ];
+
     }
 
 
@@ -70,4 +72,27 @@ class Product extends \yii\db\ActiveRecord
         return ($this->image) ? '/uploads/' . $this->image : '/uploads/no-image.png';
 
     }
+
+    public static function getCategoryName()
+    {
+        $query = new Query();
+
+        $query->select('category.name')
+            ->from('product')
+            ->join('INNER JOIN', 'category', 'category.id = product.cat_id')
+        ;
+
+
+        return $rows = $query->all();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReviews()
+    {
+        return $this->hasMany(Review::className(), ['product_id' => 'id']);
+    }
+
+
 }

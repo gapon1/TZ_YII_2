@@ -18,7 +18,7 @@ class ReviewSearch extends Review
     {
         return [
             [['id'], 'integer'],
-            [['date', 'name', 'email', 'text'], 'safe'],
+            [['date', 'name', 'email', 'text', 'product_id'], 'safe'],
         ];
     }
 

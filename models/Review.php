@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "review".
@@ -31,8 +32,11 @@ class Review extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date'], 'safe'],
-            [['name', 'email', 'text'], 'string', 'max' => 255],
+            [['name', 'email', 'text'], 'required'],
+            [['date'], 'default', 'value' => date("Y-m-d")],
+            ['email', 'email'],
+            [['name', 'text'], 'string', 'max' => 255],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
@@ -47,14 +51,24 @@ class Review extends \yii\db\ActiveRecord
             'name' => 'Name',
             'email' => 'Email',
             'text' => 'Text',
+            'product_id' => 'Product ID',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProducts()
+
+
+    public static function getProductReview($id)
     {
-        return $this->hasMany(Product::className(), ['review_id' => 'id']);
+        $query = new Query();
+        $query->select('review.text')
+            ->from('review')
+        ->join('INNER JOIN', 'product', 'review.product_id = product.id')
+        ->where('product.id = '. $id);
+
+        return $rows = $query->all();
+
     }
+
+
+
 }

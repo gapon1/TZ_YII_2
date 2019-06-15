@@ -2,7 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use app\models\ImageUpload;
+use app\models\Review;
 use Yii;
 use app\models\Product;
 use app\models\ProductSearch;
@@ -54,8 +56,11 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
+        $reviews = Review::getProductReview($id);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'reviews' => $reviews
         ]);
     }
 
@@ -86,11 +91,13 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
 
         return $this->render('update', [
             'model' => $model,
@@ -130,23 +137,24 @@ class ProductController extends Controller
 
     public function actionSetImage($id)
     {
-       $model = new ImageUpload;
+        $model = new ImageUpload;
 
-       if (Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
 
-           $product = $this->findModel($id);
+            $product = $this->findModel($id);
 
+            $file = UploadedFile::getInstance($model, 'image');
 
-           $file = UploadedFile::getInstance($model, 'image');
+            $product->saveImage($model->uploadFile($file));
 
-           $product->saveImage( $model->uploadFile($file));
+            return $this->redirect(['view', 'id' => $product->id]);
 
+        }
 
-           return $this->redirect(['view', 'id'=>$product->id]);
-
-
-       }
-
-       return $this->render('image', ['model'=> $model]);
+        return $this->render('image',
+            ['model' => $model]
+        );
     }
+
+
 }

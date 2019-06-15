@@ -32,12 +32,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'cat_id',
-            'review_id',
             'title',
             'description',
             'image',
             'price',
         ],
     ]) ?>
+
+
+    <h2>Product Reviews</h2>
+
+    <?php foreach ($reviews as $review): ?>
+        <?= DetailView::widget([
+            'model' => $review,
+            'attributes' => [
+                [
+                    'label' => 'Review',
+                    'format' => 'raw',
+                    'attribute' => 'text'
+                ]
+            ],
+        ]) ?>
+    <?php endforeach; ?>
 
 </div>
