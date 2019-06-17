@@ -2,24 +2,27 @@
 
 namespace app\models;
 
-use Yii;
-use yii\db\Query;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "category".
- *
  * @property int $id
  * @property string $name
  * @property string $description
  *
  * @property Product[] $products
  */
-class Category extends \yii\db\ActiveRecord
+class Category extends ActiveRecord
 {
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'category';
     }
@@ -27,7 +30,7 @@ class Category extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'description'], 'required'],
@@ -38,7 +41,7 @@ class Category extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -48,11 +51,10 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getProducts()
+    public function getProducts(): ActiveQuery
     {
-        return $this->hasMany(Product::className(), ['cat_id' => 'id']);
+        return $this->hasMany(Product::class, ['cat_id' => 'id']);
     }
-
 }

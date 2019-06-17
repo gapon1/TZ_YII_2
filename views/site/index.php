@@ -7,7 +7,7 @@ $this->title = 'My Yii Application';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1><?= Yii::t('common', 'Поздравляем')?> !</h1>
+        <h1><?= Yii::t('common', 'Интернет магазин')?> !</h1>
 
         <p class="lead"><?= Yii::t('common', 'Перед вами главная страница каталога товаров, созданых на Yii2')?></p>
 

@@ -2,21 +2,10 @@
 
 namespace app\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Query;
 
-/**
- * This is the model class for table "review".
- *
- * @property int $id
- * @property string $date
- * @property string $name
- * @property string $email
- * @property string $text
- *
- * @property Product[] $products
- */
-class Review extends \yii\db\ActiveRecord
+class Review extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -29,21 +18,27 @@ class Review extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'email', 'text'], 'required'],
             [['date'], 'default', 'value' => date("Y-m-d")],
             ['email', 'email'],
             [['name', 'text'], 'string', 'max' => 255],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
+            [
+                ['product_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Product::class,
+                'targetAttribute' => ['product_id' => 'id'],
+            ],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -55,20 +50,14 @@ class Review extends \yii\db\ActiveRecord
         ];
     }
 
-
-
-    public static function getProductReview($id)
+    public static function getProductReview(int $id): array
     {
         $query = new Query();
-        $query->select('review.text')
+        $query->select('review.text, review.id')
             ->from('review')
-        ->join('INNER JOIN', 'product', 'review.product_id = product.id')
-        ->where('product.id = '. $id);
+            ->join('INNER JOIN', 'product', 'review.product_id = product.id')
+            ->where('product.id = '.$id);
 
         return $rows = $query->all();
-
     }
-
-
-
 }

@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = Yii::t('common', 'Обновить');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'modelReview' => $modelReview,
     ]) ?>
 
 

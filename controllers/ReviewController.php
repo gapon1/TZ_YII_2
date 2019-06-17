@@ -2,65 +2,53 @@
 
 namespace app\controllers;
 
+use app\models\Product;
 use Yii;
 use app\models\Review;
 use app\models\ReviewSearch;
-use yii\web\Controller;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
-/**
- * ReviewController implements the CRUD actions for Review model.
- */
-class ReviewController extends Controller
+class ReviewController extends AbstractController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+                'class' => VerbFilter::class,
+                'actions' => ['delete' => ['POST']],
             ],
         ];
     }
 
     /**
-     * Lists all Review models.
-     * @return mixed
+     * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new ReviewSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index', ['dataProvider' => $dataProvider,]);
     }
 
     /**
-     * Displays a single Review model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param int $id
+     * @return string
+     * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView(int $id): string
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return $this->render('view', ['model' => $this->findModel($id)]);
     }
 
     /**
-     * Creates a new Review model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|Response
      */
     public function actionCreate()
     {
@@ -70,19 +58,30 @@ class ReviewController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model]);
     }
 
     /**
-     * Updates an existing Review model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return string|Response
      */
-    public function actionUpdate($id)
+    public function actionCreateReview($productId)
+    {
+        $model = new Review();
+        $model->product_id = $productId;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create_for_product', ['model' => $model]);
+    }
+
+    /**
+     * @param int $id
+     * @return string|Response
+     * @throws NotFoundHttpException
+     */
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
@@ -90,19 +89,17 @@ class ReviewController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model]);
     }
 
     /**
-     * Deletes an existing Review model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return Response
+     * @throws NotFoundHttpException
+     * @throws StaleObjectException
+     * @throws \Throwable
      */
-    public function actionDelete($id)
+    public function actionDelete($id): Response
     {
         $this->findModel($id)->delete();
 
@@ -110,18 +107,16 @@ class ReviewController extends Controller
     }
 
     /**
-     * Finds the Review model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Review the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return Review|null
+     * @throws NotFoundHttpException
      */
-    protected function findModel($id)
+    protected function findModel($id): ?Review
     {
         if (($model = Review::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        $this->pageNotFound();
     }
 }

@@ -2,29 +2,26 @@
 
 namespace app\models;
 
-use Yii;
-use yii\db\Query;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "product".
  *
  * @property int $id
  * @property int $cat_id
- * @property int $review_id
  * @property string $title
  * @property string $description
  * @property string $image
  * @property int $price
  *
- * @property Category $cat
- * @property Review $review
  */
-class Product extends \yii\db\ActiveRecord
+class Product extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'product';
     }
@@ -32,7 +29,7 @@ class Product extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['price'], 'integer'],
@@ -46,7 +43,7 @@ class Product extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -59,40 +56,26 @@ class Product extends \yii\db\ActiveRecord
 
     }
 
-
-    public function saveImage($filename)
+    public function saveImage(string $filename): bool
     {
         $this->image = $filename;
 
         return $this->save(false);
     }
 
-    public function getImage()
+    public function getImage(): string
     {
         return ($this->image) ? '/uploads/' . $this->image : '/uploads/no-image.png';
-
     }
 
-    public static function getCategoryName()
+    public function getReviews(): ActiveQuery
     {
-        $query = new Query();
-
-        $query->select('category.name')
-            ->from('product')
-            ->join('INNER JOIN', 'category', 'category.id = product.cat_id')
-        ;
-
-
-        return $rows = $query->all();
+        return $this->hasMany(Review::class, ['product_id' => 'id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getReviews()
+    public function getCategory(): ActiveQuery
     {
-        return $this->hasMany(Review::className(), ['product_id' => 'id']);
+        return $this->hasOne(Category::class, ['id' => 'cat_id']);
+
     }
-
-
 }

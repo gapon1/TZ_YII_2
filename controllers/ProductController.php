@@ -2,72 +2,57 @@
 
 namespace app\controllers;
 
-use app\models\Category;
 use app\models\ImageUpload;
 use app\models\Review;
 use Yii;
 use app\models\Product;
 use app\models\ProductSearch;
-use yii\web\Controller;
+use yii\db\StaleObjectException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
-/**
- * ProductController implements the CRUD actions for Product model.
- */
-class ProductController extends Controller
+class ProductController extends AbstractController
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+                'class' => VerbFilter::class,
+                'actions' => ['delete' => ['POST']],
             ],
         ];
     }
 
     /**
-     * Lists all Product models.
-     * @return mixed
+     * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 
     /**
-     * Displays a single Product model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param int $id
+     * @return string
+     * @throws NotFoundHttpException
      */
-    public function actionView($id)
+    public function actionView(int $id): string
     {
         $reviews = Review::getProductReview($id);
 
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            'reviews' => $reviews
-        ]);
+        return $this->render('view', ['model' => $this->findModel($id), 'reviews' => $reviews]);
     }
 
     /**
-     * Creates a new Product model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string|Response
      */
     public function actionCreate()
     {
@@ -77,20 +62,17 @@ class ProductController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model]);
     }
 
     /**
-     * Updates an existing Product model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return string|Response
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id)
     {
+        $modelReview = $this->findModelTwo($id);
 
         $model = $this->findModel($id);
 
@@ -98,20 +80,17 @@ class ProductController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model, 'modelReview' => $modelReview]);
     }
 
     /**
-     * Deletes an existing Product model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param int $id
+     * @return Response
+     * @throws NotFoundHttpException
+     * @throws StaleObjectException
+     * @throws \Throwable
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): Response
     {
         $this->findModel($id)->delete();
 
@@ -119,42 +98,50 @@ class ProductController extends Controller
     }
 
     /**
-     * Finds the Product model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Product the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return Product
+     * @throws NotFoundHttpException
      */
-    protected function findModel($id)
+    protected function findModel($id): Product
     {
         if (($model = Product::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        $this->pageNotFound();
     }
 
+    /**
+     * @param int $id
+     * @return Review|null
+     * @throws NotFoundHttpException
+     */
+    protected function findModelTwo(int $id): ?Review
+    {
+        if (($model = Review::findOne($id)) !== null) {
+            return $model;
+        }
 
-    public function actionSetImage($id)
+        $this->pageNotFound();
+    }
+
+    /**
+     * @param int $id
+     * @return string|Response
+     * @throws NotFoundHttpException
+     */
+    public function actionSetImage(int $id)
     {
         $model = new ImageUpload;
 
         if (Yii::$app->request->isPost) {
-
             $product = $this->findModel($id);
-
             $file = UploadedFile::getInstance($model, 'image');
-
             $product->saveImage($model->uploadFile($file));
 
             return $this->redirect(['view', 'id' => $product->id]);
-
         }
 
-        return $this->render('image',
-            ['model' => $model]
-        );
+        return $this->render('image', ['model' => $model]);
     }
-
-
 }

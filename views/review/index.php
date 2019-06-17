@@ -13,11 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="review-index">
 
     <h1><?= Yii::t('common', 'Отзывы о товаре') ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('common', 'Написать отзыв'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([

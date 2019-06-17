@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Yii::t('common', 'Товары') ?></h1>
     <p>
-        <?= Html::a(Yii::t('common','Создать товар'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('common', 'Создать товар'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -22,7 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'cat_id',
+            [
+                'label' => 'Category',
+                'value' => 'category'
+            ],
             'title',
             [
                 'label' => 'description',

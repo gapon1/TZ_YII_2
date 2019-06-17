@@ -10,7 +10,7 @@ class m190615_150604_create_review_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function safeUp(): void
     {
         $this->createTable('{{%review}}', [
             'id' => $this->primaryKey(),
@@ -42,7 +42,7 @@ class m190615_150604_create_review_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): void
     {
         $this->dropTable('{{%review}}');
     }

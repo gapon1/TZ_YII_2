@@ -10,7 +10,7 @@ class m190520_162356_create_product_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function safeUp(): void
     {
         $this->createTable('{{%product}}', [
             'id' => $this->primaryKey(),
@@ -37,16 +37,12 @@ class m190520_162356_create_product_table extends Migration
             'CASCADE'
         );
 
-
-
-
-
     }
 
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): void
     {
         $this->dropTable('{{%comment}}');
     }

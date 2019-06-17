@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('common', 'Обновить'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('common', 'Задать картинку'), ['set-image', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
+        <?= Html::a(Yii::t('common', 'Оставить отзыв'), ['review/create-review', 'productId' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a(Yii::t('common', 'Удалить'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -40,19 +41,30 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 
-    <h2><?= Yii::t('common', 'Отзывы о товаре')?></h2>
+    <h2><?= Yii::t('common', 'Отзывы о товаре') ?></h2>
 
-    <?php foreach ($reviews as $review): ?>
+
+    <?php
+
+    foreach ($reviews as $review): ?>
         <?= DetailView::widget([
-            'model' => $review,
-            'attributes' => [
+            'model' => $review, 'attributes' => [
                 [
-                    'label' => 'Review',
+                    'label' => Yii::t('common','Отзыв'),
                     'format' => 'raw',
-                    'attribute' => 'text'
+                    'attribute' => 'text',
+                ],
+                [
+                    'label' => false,
+                    'format' => 'raw',
+                    'value' => Html::a(Yii::t('common', 'Редактировать отзыв'), ['review/update', 'id' => $review['id']], ['class' => 'btn btn-success'])
                 ]
+
             ],
-        ]) ?>
-    <?php endforeach; ?>
+        ]);
+
+    endforeach;
+    ?>
+
 
 </div>

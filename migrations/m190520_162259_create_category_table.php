@@ -10,7 +10,7 @@ class m190520_162259_create_category_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function safeUp(): void
     {
         $this->createTable('{{%category}}', [
             'id' => $this->primaryKey(),
@@ -22,7 +22,7 @@ class m190520_162259_create_category_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function safeDown(): void
     {
         $this->dropTable('{{%category}}');
     }

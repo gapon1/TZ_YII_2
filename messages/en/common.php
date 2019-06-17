@@ -8,7 +8,7 @@ return [
     'Создать категорию' => 'Create Category',
     'Обновить' => 'Update',
     'Удалить' => 'Delete',
-    'Поздравляем' => 'Congratulations',
+    'Интернет магазин' => 'Internet shop',
     'Перед вами главная страница каталога товаров, созданых на Yii2' => 'You see the main page of the catalog of goods create on Yii2',
     'Приступить' => 'Get started',
     'Обновить Категорию' => 'Update Category',
@@ -20,5 +20,8 @@ return [
     'Написать отзыв' => 'Create review',
     'Обновить отзыв' =>  'Update Review',
     'Компания' => 'Brands',
-    'Моя компания' => 'My Company'
+    'Моя компания' => 'My Company',
+    'Оставить отзыв' => 'Add feedback',
+    'Edit review'=>'Edit review',
+    'Review' => 'Отзыв'
 ];

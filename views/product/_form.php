@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Category;
 use yii\helpers\ArrayHelper;
+use app\models\Product;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Product */
@@ -24,6 +25,10 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'price')->textInput() ?>
+
+
+
+
 
 
     <div class="form-group">
