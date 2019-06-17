@@ -16,6 +16,7 @@ AppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/css/flag-icon.css" rel="stylesheet">
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,23 +29,39 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
+
+
+    $languageItem = new cetver\LanguageSelector\items\DropDownLanguageItem([
+        'languages' => [
+            'en' => '<span class="flag-icon flag-icon-us"></span> English',
+            'ru' => '<span class="flag-icon flag-icon-ru"></span> Russian',
+        ],
+        'options' => ['encode' => false],
+    ]);
+
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+       'brandLabel' => Yii::t('common', 'Компания'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Product', 'url' => ['/product']],
-            ['label' => 'Category', 'url' => ['/category']],
-            ['label' => 'Product-Review', 'url' => ['/review']],
+            ['label' => Yii::t('common', 'Главная'), 'url' => ['/site/index']],
+            ['label' => Yii::t('common', 'Товар'), 'url' => ['/product']],
+            ['label' => Yii::t('common', 'Категории'), 'url' => ['/category']],
+            ['label' => Yii::t('common', 'Отзывы о товаре'), 'url' => ['/review']],
+            $languageItem->toArray()
+
         ],
+
     ]);
     NavBar::end();
+
     ?>
 
     <div class="container">
@@ -58,7 +75,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy;  <?= Yii::t('common', 'Моя компания '). date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>

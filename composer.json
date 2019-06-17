@@ -17,7 +17,12 @@
         "php": ">=7.2.3",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "codemix/yii2-localeurls": "^1.7",
+        "cetver/yii2-language-selector": "^1.0",
+        "kartik-v/yii2-icons": "@dev",
+        "hiqdev/yii2-asset-flag-icon-css": "^2.0",
+        "components/flag-icon-css": "^3.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

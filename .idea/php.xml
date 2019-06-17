@@ -73,6 +73,15 @@
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
       <path value="$PROJECT_DIR$/vendor/cebe/markdown" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/vendor/codemix/yii2-localeurls" />
+      <path value="$PROJECT_DIR$/vendor/cetver/yii2-language-selector" />
+      <path value="$PROJECT_DIR$/vendor/components/flag-icon-css" />
+      <path value="$PROJECT_DIR$/vendor/yiisoft/yii2-jui" />
+      <path value="$PROJECT_DIR$/vendor/bower-asset/jquery-ui" />
+      <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-icons" />
+      <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-krajee-base" />
+      <path value="$PROJECT_DIR$/vendor/hiqdev/yii2-asset-flag-icon-css" />
+      <path value="$PROJECT_DIR$/vendor/bower-asset/flag-icon-css" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

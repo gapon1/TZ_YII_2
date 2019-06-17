@@ -1,0 +1,71 @@
+{
+    "name": "hiqdev/yii2-asset-flag-icon-css",
+    "type": "yii2-extension",
+    "description": "Yii2 asset for bower flag-icon-css",
+    "keywords": [
+        "flag-icon-css",
+        "asset",
+        "extension",
+        "yii2"
+    ],
+    "homepage": "https://github.com/hiqdev/yii2-asset-flag-icon-css",
+    "license": "BSD-3-Clause",
+    "support": {
+        "email": "support@hiqdev.com",
+        "source": "https://github.com/hiqdev/yii2-asset-flag-icon-css",
+        "issues": "https://github.com/hiqdev/yii2-asset-flag-icon-css/issues",
+        "wiki": "https://github.com/hiqdev/yii2-asset-flag-icon-css/wiki",
+        "forum": "https://forum.hiqdev.com/yii2"
+    },
+    "authors": [
+        {
+            "name": "Andrii Vasyliev",
+            "role": "Project lead",
+            "email": "sol@hiqdev.com",
+            "homepage": "http://hipanel.com/"
+        },
+        {
+            "name": "Dmitry Naumenko",
+            "role": "Lead backend developer",
+            "email": "d.naumenko.a@gmail.com",
+            "homepage": "http://silverfire.me/"
+        },
+        {
+            "name": "Andrey Klochok",
+            "role": "Lead frontend developer",
+            "email": "andreyklochok@gmail.com",
+            "homepage": "http://hiqdev.com/"
+        },
+        {
+            "name": "Yuriy Myronchuk",
+            "role": "QA Lead",
+            "email": "bladeroot@gmail.com",
+            "homepage": "http://hiqdev.com/"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0",
+        "bower-asset/flag-icon-css": "^2.0"
+    },
+    "require-dev": {
+        "hiqdev/hidev-php": "<2.0",
+        "hiqdev/hidev-hiqdev": "<2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "hiqdev\\assets\\flagiconcss\\": "src"
+        }
+    },
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
